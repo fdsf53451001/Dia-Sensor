@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-from cv2 import add
 import smbus
 from mlx90614 import MLX90614
 
