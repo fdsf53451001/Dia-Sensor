@@ -7,4 +7,7 @@ address = 0x5a
 
 if __name__ == '__main__':
     for i in range(40):
-        print(bus.read_byte_data(address,i))
+        try:
+            print(i,bus.read_byte_data(address,i))
+        except Exception:
+            print('Error happened!')
