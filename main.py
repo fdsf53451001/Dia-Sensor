@@ -18,8 +18,8 @@ GPIO.setup(servo1_pin, GPIO.OUT)
 GPIO.setup(servo2_pin, GPIO.OUT)
 motor1 = GPIO.PWM(servo1_pin, 50) # PWM with 50Hz
 motor2 = GPIO.PWM(servo2_pin, 50) # PWM with 50Hz
-motor1.start(2.5) # Initialization
-motor2.start(2.5)
+motor1.start(7.5) # Initialization
+motor2.start(7.5)
 
 def get_temp(thermo,address):
     try:
@@ -47,9 +47,9 @@ if __name__ == '__main__':
         time.sleep(1)
         move_motor(motor1,100)
         time.sleep(1)
-        move_motor(motor2,70)
+        move_motor(motor2,80)
         time.sleep(1)
-        move_motor(motor2,90)
+        move_motor(motor2,100)
         time.sleep(1)
 
 
