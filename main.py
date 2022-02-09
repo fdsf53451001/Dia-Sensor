@@ -38,9 +38,13 @@ if __name__ == '__main__':
     temp1 = get_temp(thermo1,temp1_address)
     print(temp1)
 
-    move_motor(motor1,50)
-    move_motor(motor1,150)
-    move_motor(motor1,50)
+    while True:
+        move_motor(motor1,50)
+        time.sleep(1)
+        move_motor(motor1,150)
+        time.sleep(1)
+        move_motor(motor1,50)
+        time.sleep(1)
 
 
     
