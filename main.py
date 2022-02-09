@@ -14,6 +14,7 @@ servo1_pin = 12
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(servo1_pin, GPIO.OUT)
 motor1 = GPIO.PWM(servo1_pin, 50) # GPIO 17 for PWM with 50Hz
+motor1.start(2.5) # Initialization
 
 def get_temp(thermo,address):
     try:
