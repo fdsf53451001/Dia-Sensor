@@ -52,13 +52,13 @@ if __name__ == '__main__':
         # time.sleep(1)
         # move_motor_with_angle(motor1,100)
         # time.sleep(1)
-        move_motor_with_angle(motor2,70)
-        time.sleep(1)
-        move_motor_with_angle(motor2,90)
-        time.sleep(1)
-
-        # move_motor(motor2,6.5)
+        # move_motor_with_angle(motor2,70)
         # time.sleep(1)
+        # move_motor_with_angle(motor2,90)
+        # time.sleep(1)
+
+        move_motor(motor2,7)
+        time.sleep(1)
         # move_motor(motor2,7.5)
         # time.sleep(1)
 
