@@ -39,11 +39,11 @@ if __name__ == '__main__':
     print(temp1)
 
     while True:
-        move_motor(motor1,50)
+        move_motor(motor1,60)
         time.sleep(1)
-        move_motor(motor1,150)
+        move_motor(motor1,100)
         time.sleep(1)
-        move_motor(motor1,50)
+        move_motor(motor1,60)
         time.sleep(1)
 
 
