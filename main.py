@@ -30,7 +30,7 @@ def get_temp(thermo,address):
 
 def move_motor_with_angle(motor,angle):
     # dutycycle = ((angle/180.0) + 1.0) * 5.0
-    dutycycle = 5+(angle/180.0) * 5.0
+    dutycycle = 4.5+(angle/180.0) * 5.0
     motor.ChangeDutyCycle(dutycycle)
     time.sleep(0.5)
 
@@ -52,13 +52,13 @@ if __name__ == '__main__':
         # time.sleep(1)
         # move_motor_with_angle(motor1,100)
         # time.sleep(1)
-        # move_motor_with_angle(motor2,70)
-        # time.sleep(1)
-        # move_motor_with_angle(motor2,90)
-        # time.sleep(1)
-
-        move_motor(motor2,7)
+        move_motor_with_angle(motor2,70)
         time.sleep(1)
+        move_motor_with_angle(motor2,90)
+        time.sleep(1)
+
+        # move_motor(motor2,7)
+        # time.sleep(1)
         # move_motor(motor2,7.5)
         # time.sleep(1)
 
