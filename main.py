@@ -47,9 +47,9 @@ if __name__ == '__main__':
         time.sleep(1)
         move_motor(motor1,100)
         time.sleep(1)
-        move_motor(motor2,80)
+        move_motor(motor2,70)
         time.sleep(1)
-        move_motor(motor2,100)
+        move_motor(motor2,90)
         time.sleep(1)
 
 
