@@ -48,14 +48,13 @@ if __name__ == '__main__':
     print(temp1)
 
     while True:
-        # move_motor_with_angle(motor1,60)
-        # time.sleep(1)
-        # move_motor_with_angle(motor1,100)
-        # time.sleep(1)
-        move_motor_with_angle(motor2,70)
-        time.sleep(1)
-        move_motor_with_angle(motor2,90)
-        time.sleep(1)
+        move_motor_with_angle(motor1,87)
+        move_motor_with_angle(motor2,87)
+        time.sleep(2)
+
+        move_motor_with_angle(motor1,135)
+        move_motor_with_angle(motor2,81)
+        time.sleep(2)
 
         # move_motor(motor2,7)
         # time.sleep(1)
