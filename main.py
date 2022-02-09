@@ -6,6 +6,8 @@ from mlx90614 import MLX90614
 import time
 from random import shuffle
 
+angle = [(135,81),(122,75),(36,91),(131,78),(42,94),(24,105),(52,95),(147,67)]
+
 # setup thermo
 temp1_address = 0x5a
 thermo1 = MLX90614(temp1_address)
@@ -39,7 +41,7 @@ def move_motor(motor,value):
     time.sleep(0.5)
 
 def get_random_order():
-    order = [1,2,3,4,5]
+    order = [0,1,2,3,4,5,6,7]
     shuffle(order)
     return order
 
@@ -48,13 +50,19 @@ if __name__ == '__main__':
     print(temp1)
 
     while True:
+        #init
         move_motor_with_angle(motor1,87)
         move_motor_with_angle(motor2,87)
         time.sleep(2)
 
-        move_motor_with_angle(motor1,135)
-        move_motor_with_angle(motor2,81)
-        time.sleep(2)
+        for index in get_random_order():
+            move_motor_with_angle(motor1,angle[index][0])
+            move_motor_with_angle(motor2,angle[index][1])
+            time.sleep(2)
+
+        # move_motor_with_angle(motor1,135)
+        # move_motor_with_angle(motor2,81)
+        # time.sleep(2)
 
         # move_motor(motor2,7)
         # time.sleep(1)
