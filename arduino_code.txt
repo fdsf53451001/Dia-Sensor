@@ -1,0 +1,104 @@
+#include <Servo.h> 
+
+// 建立一個 Servo 物件 
+Servo servo1; 
+Servo servo2;
+Servo servo3; 
+ int led = LED_BUILTIN;
+int startpb =8;
+int cont =0;
+void setup() {
+Serial.begin(9600);
+pinMode(led,OUTPUT);
+pinMode(startpb,INPUT);
+  servo1.attach(6);  // Servo 接在 pin 6
+  servo2.attach(5);  // Servo 接在 pin 5
+  servo3.attach(3);  // 出線Servo 接在 pin 3
+} 
+
+
+void loop() {
+  int pbState = digitalRead(startpb);
+  servo1.write(87);                  // 設定sv1 原點位置
+    delay(15); 
+    servo2.write(87);    // 設定sv2 原點位置
+    delay(15); 
+    servo3.write(60); 
+    delay(15); 
+  if (pbState==1 )
+  {
+   servo1.write(135);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(81);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout();
+
+    servo1.write(122);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(75);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout();
+    
+     servo1.write(36);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(91);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout();
+
+    servo1.write(131);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(78);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout(); 
+
+    servo1.write(42);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(94);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout(); 
+
+    servo1.write(24);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(105);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout(); 
+
+    servo1.write(52);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(95);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout(); 
+
+    servo1.write(147);                  // 設定sv1 第一點位置
+    delay(15); 
+    servo2.write(67);                  // 設定sv2 第一點位置
+    delay(1000); 
+    lineout(); 
+
+    
+  digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(500);                       // wait for a second
+  digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
+  delay(500);
+  cont=cont+1;
+  //Serial.println(cont);
+  delay(20);
+  }
+else {
+  if (pbState==0){
+    cont=0;
+  }
+}
+ }
+
+ void lineout(){
+  servo3.write(105);                  // 設定sv1 第一點位置
+    delay(1500); 
+    servo3.write(60);                  // 設定sv1 第一點位置
+    delay(500);
+    servo3.write(105);                  // 設定sv1 第一點位置
+    delay(1500); 
+    servo3.write(60);                  // 設定sv1 第一點位置
+    delay(500);
+  }
+ 

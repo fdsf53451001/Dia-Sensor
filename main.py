@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 from mlx90614 import MLX90614
 
 import time
+from random import shuffle
 
 # setup thermo
 temp1_address = 0x5a
@@ -24,18 +25,22 @@ def get_temp(thermo,address):
         return -1
 
 def move_motor(motor,angle):
-    motor.ChangeDutyCycle(5)
+    dutycycle = ((angle/180.0) + 1.0) * 5.0
+    motor.ChangeDutyCycle(dutycycle)
     time.sleep(0.5)
 
+def get_random_order():
+    order = [1,2,3,4,5]
+    shuffle(order)
+    return order
 
 if __name__ == '__main__':
-
     temp1 = get_temp(thermo1,temp1_address)
     print(temp1)
 
-    move_motor(motor1,5)
-    move_motor(motor1,10)
-    move_motor(motor1,5)
+    move_motor(motor1,50)
+    move_motor(motor1,150)
+    move_motor(motor1,50)
 
 
     
