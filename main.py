@@ -18,8 +18,8 @@ GPIO.setup(servo1_pin, GPIO.OUT)
 GPIO.setup(servo2_pin, GPIO.OUT)
 motor1 = GPIO.PWM(servo1_pin, 50) # PWM with 50Hz
 motor2 = GPIO.PWM(servo2_pin, 50) # PWM with 50Hz
-motor1.start(7.5) # Initialization
-motor2.start(7.5)
+motor1.start(1) # Initialization
+motor2.start(1)
 
 def get_temp(thermo,address):
     try:
@@ -28,9 +28,13 @@ def get_temp(thermo,address):
         print('temp sensor error!')
         return -1
 
-def move_motor(motor,angle):
+def move_motor_with_angle(motor,angle):
     dutycycle = ((angle/180.0) + 1.0) * 5.0
     motor.ChangeDutyCycle(dutycycle)
+    time.sleep(0.5)
+
+def move_motor(motor,value):
+    motor.ChangeDutyCycle(value)
     time.sleep(0.5)
 
 def get_random_order():
@@ -43,13 +47,18 @@ if __name__ == '__main__':
     print(temp1)
 
     while True:
-        move_motor(motor1,60)
+        # move_motor_with_angle(motor1,60)
+        # time.sleep(1)
+        # move_motor_with_angle(motor1,100)
+        # time.sleep(1)
+        # move_motor_with_angle(motor2,70)
+        # time.sleep(1)
+        # move_motor_with_angle(motor2,90)
+        # time.sleep(1)
+
+        move_motor(motor2,1)
         time.sleep(1)
-        move_motor(motor1,100)
-        time.sleep(1)
-        move_motor(motor2,70)
-        time.sleep(1)
-        move_motor(motor2,90)
+        move_motor(motor2,1.3)
         time.sleep(1)
 
 
