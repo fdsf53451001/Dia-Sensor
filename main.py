@@ -6,6 +6,7 @@ from mlx90614 import MLX90614
 import time
 from random import shuffle
 
+#outside, inside
 angle = [
     (135,81),
     (122,75),
