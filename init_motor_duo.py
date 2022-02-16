@@ -1,16 +1,27 @@
 import RPi.GPIO as GPIO
 import time
 
+import time
+import wiringpi
+
 GPIO.setmode(GPIO.BCM)
 servo1_pin = 12     # 外側
-GPIO.setup(servo1_pin, GPIO.OUT)
-motor1 = GPIO.PWM(servo1_pin, 50) # PWM with 50Hz
-motor1.start(1) # Initialization
-
 servo2_pin = 13     # 內側
-GPIO.setup(servo2_pin, GPIO.OUT)
-motor2 = GPIO.PWM(servo2_pin, 50) # PWM with 50Hz
-motor2.start(1) # Initialization
+
+# use 'GPIO naming'
+wiringpi.wiringPiSetupGpio()
+
+# set #18 to be a PWM output
+wiringpi.pinMode(servo1_pin, wiringpi.GPIO.PWM_OUTPUT)
+wiringpi.pinMode(servo2_pin, wiringpi.GPIO.PWM_OUTPUT)
+
+# set the PWM mode to milliseconds stype
+wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
+
+# divide down clock
+wiringpi.pwmSetClock(192)
+wiringpi.pwmSetRange(2000)
+
 
 print('Setup ready!')
 
@@ -24,6 +35,6 @@ while True:
     print('Input angle (inner,outter):')
     angle2 = int(input())
     angle1 = int(input())
-    move_motor_with_angle(motor1,angle1)
-    move_motor_with_angle(motor2,angle2)
+    wiringpi.pwmWrite(servo1_pin, 100+angle1/180*100)
+    wiringpi.pwmWrite(servo2_pin, 100+angle2/180*100)
     time.sleep(2)
