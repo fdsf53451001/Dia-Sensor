@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setmode(GPIO.BCM)
 servo1_pin = 12     # 外側
 GPIO.setup(servo1_pin, GPIO.OUT)
 motor1 = GPIO.PWM(servo1_pin, 50) # PWM with 50Hz
