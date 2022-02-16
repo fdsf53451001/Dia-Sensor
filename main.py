@@ -7,7 +7,7 @@ import wiringpi
 import time
 from random import shuffle
 
-#outside, inside
+#inside outside
 angle = [
     (84,185),
     (80,170),
@@ -87,8 +87,8 @@ if __name__ == '__main__':
         time.sleep(2)
 
         for index in get_random_order():
-            move_motor_with_angle(servo_outer_pin,angle[index][0]+servo_outer_offset)
-            move_motor_with_angle(servo_inner_pin,angle[index][1]+servo_inner_offset)
+            move_motor_with_angle(servo_outer_pin,angle[index][1]+servo_outer_offset)
+            move_motor_with_angle(servo_inner_pin,angle[index][0]+servo_inner_offset)
             set_silk(1)
             time.sleep(2)
             set_silk(0)
