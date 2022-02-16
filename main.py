@@ -27,8 +27,14 @@ thermo1 = MLX90614(temp1_address)
 GPIO.setmode(GPIO.BCM)
 servo_outer_pin = 12     # 外側
 servo_inner_pin = 13     # 內側
-servo_silk_pin = 19     # 微絲
+servo_silk_pin = 6     # 微絲
 
+# setup software pwm for silk motor
+GPIO.setup(servo_silk_pin, GPIO.OUT)
+motor_silk = GPIO.PWM(servo_silk_pin, 50) # PWM with 50Hz
+motor_silk.start(1) # Initialization
+
+# setup hardware pwm for normal motor
 # use 'GPIO naming'
 wiringpi.wiringPiSetupGpio()
 
@@ -65,10 +71,10 @@ def get_random_order():
     return order
 
 def silk_out():
-    move_motor_with_angle(servo_silk_pin,80+servo_outer_offset)
+    motor_silk.ChangeDutyCycle(4.3+(80/180.0) * 5.0)
 
 def silk_in():
-    move_motor_with_angle(servo_silk_pin,80+servo_outer_offset)
+    motor_silk.ChangeDutyCycle(4.3+(80/180.0) * 5.0)
 
 if __name__ == '__main__':
     temp1 = get_temp(thermo1,temp1_address)
