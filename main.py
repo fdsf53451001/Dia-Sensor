@@ -59,16 +59,16 @@ def move_motor(motor,value):
     wiringpi.pwmWrite(value)
     time.sleep(0.5)
 
-def set_silk(status):
-    if not status:
-        move_motor_with_angle(servo_silk_pin,70)
-    else:
-        move_motor_with_angle(servo_silk_pin,90)
-
 def get_random_order():
     order = [0,1,2,3,4,5,6,7]
     shuffle(order)
     return order
+
+def silk_out():
+    move_motor_with_angle(servo_silk_pin,80+servo_outer_offset)
+
+def silk_in():
+    move_motor_with_angle(servo_silk_pin,80+servo_outer_offset)
 
 if __name__ == '__main__':
     temp1 = get_temp(thermo1,temp1_address)
@@ -89,9 +89,9 @@ if __name__ == '__main__':
         for index in get_random_order():
             move_motor_with_angle(servo_outer_pin,angle[index][1]+servo_outer_offset)
             move_motor_with_angle(servo_inner_pin,angle[index][0]+servo_inner_offset)
-            set_silk(1)
-            time.sleep(2)
-            set_silk(0)
+            silk_out()
+            time.sleep(4)
+            silk_in()
 
         # move_motor_with_angle(motor1,135)
         # move_motor_with_angle(motor2,81)
