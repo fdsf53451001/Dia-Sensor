@@ -9,14 +9,14 @@ from random import shuffle
 
 #inside outside
 angle = [
-    (84,185),
-    (80,170),
+    (84,180),
+    (77,175),
     (75,150),
-    (57,205),
-    (84,185),
-    (80,170),
-    (75,150),
-    (57,205)
+    (55,205),
+    (105,35),
+    (100,15),
+    (95,8),
+    (125,-20)
 ]
 
 # setup thermo
@@ -90,14 +90,18 @@ if __name__ == '__main__':
         #init
         move_motor_with_angle(servo_outer_pin,90+servo_outer_offset)
         move_motor_with_angle(servo_inner_pin,90+servo_inner_offset)
+        silk_in()
         time.sleep(2)
 
         for index in get_random_order():
+            print('Running to foot',index)
             move_motor_with_angle(servo_outer_pin,angle[index][1]+servo_outer_offset)
             move_motor_with_angle(servo_inner_pin,angle[index][0]+servo_inner_offset)
             silk_out()
             time.sleep(4)
             silk_in()
-
+            time.delay(0.5)
+            temp = get_temp(thermo1,temp1_address)
+            print('Temp : ',temp)
 
     
