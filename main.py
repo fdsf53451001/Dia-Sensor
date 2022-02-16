@@ -6,7 +6,16 @@ from mlx90614 import MLX90614
 import time
 from random import shuffle
 
-angle = [(135,81),(122,75),(36,91),(131,78),(42,94),(24,105),(52,95),(147,67)]
+angle = [
+    (135,81),
+    (122,75),
+    (36,91),
+    (131,78),
+    (42,94),
+    (24,105),
+    (52,95),
+    (147,67)
+]
 
 # setup thermo
 temp1_address = 0x5a
