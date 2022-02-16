@@ -35,6 +35,6 @@ while True:
     print('Input angle (inner,outter):')
     angle2 = int(input())
     angle1 = int(input())
-    wiringpi.pwmWrite(servo1_pin, 100+angle1/180*100)
-    wiringpi.pwmWrite(servo2_pin, 100+angle2/180*100)
+    wiringpi.pwmWrite(servo1_pin, int(100+angle1/180*100))
+    wiringpi.pwmWrite(servo2_pin, int(100+angle2/180*100))
     time.sleep(2)
