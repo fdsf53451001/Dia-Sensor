@@ -27,7 +27,7 @@ thermo1 = MLX90614(temp1_address)
 GPIO.setmode(GPIO.BCM)
 servo_outer_pin = 12     # 外側
 servo_inner_pin = 13     # 內側
-servo3_pin = 18     # 微絲
+servo_silk_pin = 18     # 微絲
 
 # use 'GPIO naming'
 wiringpi.wiringPiSetupGpio()
@@ -35,7 +35,7 @@ wiringpi.wiringPiSetupGpio()
 # set #18 to be a PWM output
 wiringpi.pinMode(servo_outer_pin, wiringpi.GPIO.PWM_OUTPUT)
 wiringpi.pinMode(servo_inner_pin, wiringpi.GPIO.PWM_OUTPUT)
-wiringpi.pinMode(servo3_pin, wiringpi.GPIO.PWM_OUTPUT)
+wiringpi.pinMode(servo_silk_pin, wiringpi.GPIO.PWM_OUTPUT)
 
 # set the PWM mode to milliseconds stype
 wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
@@ -61,9 +61,9 @@ def move_motor(motor,value):
 
 def set_silk(status):
     if not status:
-        move_motor_with_angle(servo3_pin,70)
+        move_motor_with_angle(servo_silk_pin,70)
     else:
-        move_motor_with_angle(servo3_pin,90)
+        move_motor_with_angle(servo_silk_pin,90)
 
 def get_random_order():
     order = [0,1,2,3,4,5,6,7]
