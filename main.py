@@ -27,7 +27,7 @@ thermo1 = MLX90614(temp1_address)
 GPIO.setmode(GPIO.BCM)
 servo_outer_pin = 12     # 外側
 servo_inner_pin = 13     # 內側
-servo_silk_pin = 18     # 微絲
+servo_silk_pin = 19     # 微絲
 
 # use 'GPIO naming'
 wiringpi.wiringPiSetupGpio()
@@ -92,16 +92,6 @@ if __name__ == '__main__':
             silk_out()
             time.sleep(4)
             silk_in()
-
-        # move_motor_with_angle(motor1,135)
-        # move_motor_with_angle(motor2,81)
-        # time.sleep(2)
-
-        # move_motor(motor2,7)
-        # time.sleep(1)
-        # move_motor(motor2,7.5)
-        # time.sleep(1)
-
 
 
     
