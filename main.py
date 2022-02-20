@@ -71,10 +71,10 @@ def get_random_order():
     return order
 
 def silk_out():
-    motor_silk.ChangeDutyCycle(4.3+(80/180.0) * 5.0)
+    motor_silk.ChangeDutyCycle(4.3+(120/180.0) * 5.0)
 
 def silk_in():
-    motor_silk.ChangeDutyCycle(4.3+(80/180.0) * 5.0)
+    motor_silk.ChangeDutyCycle(4.3+(20/180.0) * 5.0)
 
 if __name__ == '__main__':
     temp1 = get_temp(thermo1,temp1_address)
@@ -100,7 +100,7 @@ if __name__ == '__main__':
             silk_out()
             time.sleep(4)
             silk_in()
-            time.delay(0.5)
+            time.sleep(0.5)
             temp = get_temp(thermo1,temp1_address)
             print('Temp : ',temp)
 
