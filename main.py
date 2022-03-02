@@ -6,9 +6,11 @@ import wiringpi
 
 import time
 from random import shuffle
+import requests
 
 #inside outside
 angle = [
+    (90,90),    #default
     (84,180),
     (77,175),
     (75,150),
@@ -18,6 +20,9 @@ angle = [
     (95,8),
     (125,-20)
 ]
+
+# set motor offset if 90 degree not in middle
+motor_offset = [-15,-15]
 
 # setup thermo
 temp1_address = 0x5a
@@ -57,6 +62,10 @@ def get_temp(thermo,address):
         print('temp sensor error!')
         return -1
 
+def move_motor_to_foot(i):
+    move_motor_with_angle(servo_inner_pin,angle[i][0]+motor_offset[0])
+    move_motor_with_angle(servo_outer_pin,angle[i][1]+motor_offset[1])
+
 def move_motor_with_angle(motor,angle):
     wiringpi.pwmWrite(motor, int(100+angle/180*100))
     time.sleep(0.5)
@@ -65,8 +74,9 @@ def move_motor(motor,value):
     wiringpi.pwmWrite(value)
     time.sleep(0.5)
 
-def get_random_order():
-    order = [0,1,2,3,4,5,6,7]
+def get_random_order(start,end):
+    # order = [1,2,3,4,5,6,7,8]
+    order = list(range(start,end))
     shuffle(order)
     return order
 
@@ -76,32 +86,60 @@ def silk_out():
 def silk_in():
     motor_silk.ChangeDutyCycle(4.3+(20/180.0) * 5.0)
 
+def motor_init():
+    move_motor_to_foot(0)
+    silk_in()
+    time.sleep(2)
+
+def detect_temp():
+    result = []
+    for index in get_random_order(1,9):
+        print('Running to foot',index)
+        move_motor_to_foot(index)
+        temp = get_temp(thermo1,temp1_address)
+        print('Temp : ',temp)
+        result.append(temp)
+    return result
+
+
+def post(datas, /, url=url):
+    ''' function to post the test result to database
+
+    datas: a list contain multiple test result, each as a dict.
+           with structure like follow
+           'memberid': int,
+           'temp': int list with len == 10,
+           'test': int list with len == 10
+    '''
+
+    for data in datas:
+        data['temp'] = ', '.join([str(n) for n in data['temp']])
+        data['test'] = ', '.join([str(n) for n in data['test']])
+        print(data)
+        r = requests.post(url, data=data)
+        print(r.status_code)
+        print(r.text)
+
 if __name__ == '__main__':
     temp1 = get_temp(thermo1,temp1_address)
     print(temp1)
 
-    servo_outer_offset = -15
-    servo_inner_offset = -15
-    print('Input offset (inner,outter):')
-    servo_inner_offset = int(input())
-    servo_outer_offset = int(input())
+    print('System start!')
+    #init
+    motor_init()
 
-    while True:
-        #init
-        move_motor_with_angle(servo_outer_pin,90+servo_outer_offset)
-        move_motor_with_angle(servo_inner_pin,90+servo_inner_offset)
+    # running temp detect
+    print(detect_temp())
+
+    # running silk detect
+    for index in get_random_order(1,9):
+        print('Running to foot',index)
+        move_motor_to_foot(index)
+        silk_out()
+        time.sleep(4)
         silk_in()
-        time.sleep(2)
+        time.sleep(0.5)
+    
 
-        for index in get_random_order():
-            print('Running to foot',index)
-            move_motor_with_angle(servo_outer_pin,angle[index][1]+servo_outer_offset)
-            move_motor_with_angle(servo_inner_pin,angle[index][0]+servo_inner_offset)
-            silk_out()
-            time.sleep(4)
-            silk_in()
-            time.sleep(0.5)
-            temp = get_temp(thermo1,temp1_address)
-            print('Temp : ',temp)
 
     
