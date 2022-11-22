@@ -1,0 +1,23 @@
+<!-- templates/error.html -->
+{% extends "base.html" %}
+{% block title %}FootHow - {{ error }}{% endblock title %}
+
+{% block navigation %}
+    {{ super() }}
+{% endblock navigation %}
+
+{% block content %}
+<head><link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/></head>
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+            <div class="col-lg-8 align-self-md-center">
+                <h1 class="text-white font-weight-bold">{{ error }}</h1>
+                <hr class="divider" />
+            </div>
+        </div>
+    </div>
+</header>
+<!-- About-->
+{% endblock content %}

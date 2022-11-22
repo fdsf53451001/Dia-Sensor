@@ -1,0 +1,279 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+{% block title %}FootHow{% endblock title %}
+
+{% block navigation %}
+    {{ super() }}
+{% endblock navigation %}
+
+    {% block content %}
+
+        <!-- Masthead-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <!-- <a class="nav-link active" aria-current="page" href="#">Home</a> -->
+                </li>
+                <li class="nav-item">
+                  <!-- <a class="nav-link" href="#">Link</a> -->
+                </li>
+                
+                <li class="nav-item">
+                  <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+                </li>
+              </ul>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-people"></i>關於我們
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">平台簡介</a></li>
+                  <li><a class="dropdown-item" href="#">研發團隊</a></li>
+                  <li><a class="dropdown-item" href="#award">獲獎紀錄</a></li>
+                  <li><a class="dropdown-item" href="#">應用場域</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#cooperate" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-building"></i>合作夥伴
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">全部</a></li>
+                  <li><a class="dropdown-item" href="#">企業</a></li>
+                  <li><a class="dropdown-item" href="#">醫院</a></li>
+                  <li><a class="dropdown-item" href="#">合作研發團隊</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-search"></i>產品與方案
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">FootHow</a></li>
+                  <li><a class="dropdown-item" href="#">FootHouse</a></li>
+                  <li><a class="dropdown-item" href="#">FootWOW</a></li>
+                  <li><a class="dropdown-item" href="#">購買方案</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-newspaper"></i>焦點與消息
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#info">公告消息</a></li>
+                  <li><a class="dropdown-item" href="#act">活動消息</a></li>
+                  <li><a class="dropdown-item" href="#news">焦點報導</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-info-circle"></i>產業資訊
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">產業新知</a></li>
+                  <li><a class="dropdown-item" href="#">學術研究</a></li>
+                  <li><a class="dropdown-item" href="#">國際趨勢</a></li>
+                  <li><a class="dropdown-item" href="#">成功案例</a></li>
+                </ul>
+              </li>
+            </div>
+          </div>
+        </nav>
+        <!-- ad-->
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/>
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="2000">
+              <img src="{{ url_for('static', filename='images/login.jpg') }}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item "data-bs-interval="2000">
+              <img src="{{ url_for('static', filename='images/cgu.png') }}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+              <img src="{{ url_for('static', filename='images/icon.png') }}" class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+
+        <!-- product picture -->
+        <div class="container">
+        <h2>產品</h2>
+      <hr size="10%" style="color: rgb(66, 165, 231);" width="6%"></hr>
+    </div>
+        <div id="product-pic" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#product-pic" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#product-pic" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#product-pic" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner text-center">
+            {% for i in range(0, 3) %}
+            {% if (i==0) %}
+            <div class="carousel-item active" data-bs-interval="2000">
+            {% else %}
+            <div class="carousel-item " data-bs-interval="2000">
+              {% endif %}
+              {% for j in range(0, 3) %}
+              <div class="card text-white bg-dark mb-3 product-pic" style="width: 18rem;">
+                <img src="/static/images/newindexcard/{{ j+1 }}.PNG" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title " style="text-align:left">{{title[j]}}</h5>
+                  <h5 class="card-text "style="text-align:left">{{content[j]}}</h5>
+                  
+                </div>
+              </div>
+              {% endfor %}
+              
+
+            </div>
+            {% endfor %}
+           
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#product-pic" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: black;"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#product-pic" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: black;"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      <!-- 公告  -->
+        <div class="container">
+          <h2 id="info">公告消息</h2>
+        <hr size="10%" style="color: rgb(66, 165, 231);" width="10%"></hr>
+        <div class="row">
+          <div class="col-6 ">
+            <div class="row twenty-five" style="background-color: rgb(62, 91, 185); color: yellow;"><span><br/>2022.01.21</span><div><strong>【2022 Purpose初心｜決心】創業嘉年華 榮獲【迷你獨角獸 】</strong>
+            </div>
+            </div>
+            <div class="row twenty-five"><span><br/>2021.12.18</span><div><strong>【【 2021長庚大學校園創新競賽】 榮獲 【亞軍】  </strong>
+            </div></div>
+            <div class="row twenty-five"><span><br/>2021.07.28</span><div><strong>【 2021年FITI計畫】 入選 【前40強】   </strong>
+            </div></div>
+            <div class="row twenty-five"><span><br/>2021.05.25 </span><div><strong>【北護2021全國大專校院Healthy x Happy創新創業競賽】 入選 【前12強】 </strong>
+            </div></div>
+          </div>
+          <div class="col-2 eighty"><img src="{{ url_for('static', filename='images/馬.jpg') }}" width="250px" height="420px"></div>
+          <div class="col-2 eighty"><img src="{{ url_for('static', filename='images/亞軍.jpg') }}" width="250px" height="420px"></div>
+          <div class="col-2 eighty"><img src="{{ url_for('static', filename='images/獎牌.jpg') }}" width="250px" height="420px"></div>
+        </div>
+        <button class="btn btn-primary">more</button>
+      </div>
+      <br/>
+      <!-- 產業資訊 -->
+      <div class="container">
+        <h2 >產業資訊</h2>
+      <hr size="10%" style="color: rgb(66, 165, 231);" width="10%" >
+      <div class="row">
+        <div class="col-4 ">
+          <div class="row twenty"><span style="color: rgb(62, 200, 255);">2022.01.21 <div class="label blue text-center">產業新知</div></span>
+            <div><a href="https://www.ecri.org/top-10-health-technology-hazards-2022-executive-brief">10 Health Tech Hazards in 2022</a> 
+            </div>
+          </div>
+          <div class="row twenty"><span style="color: rgb(62, 200, 255);">2021.01.20 <div class="label blue text-center">產業新知</div><div class="label red text-center">國際趨勢</div></span>
+            <div><a href="https://www.ehtrend.com.br/en/pages/1094701/hololens-2-aids-healthcare-efforts-at-uk-care-home-replacing-tablets-a.html">HoloLens 2 aids healthcare efforts as UK c....</a><br/>
+            </div>
+        </div>
+          <div class="row twenty"><span style="color: rgb(62, 200, 255);">2021.01.20 <div class="label blue text-center">產業新知</div><div class="label green text-center">學術研究</div><div class="label red text-center">國際趨勢</div></span>
+            <div><a href="https://www.news-medical.net/news/20220119/Pioneering-AI-technology-can-accurately-detect-Covid-19-in-a-few-minutes.aspx"> AI technology can accurately d...</a><br/>
+            </div>
+        </div>
+          <div class="row twenty"><span style="color: rgb(62, 200, 255);">2021.01.19 <div class="label blue text-center">產業新知</div><div class="label yellow text-center">成功案例</div></span>
+            <div><a href="https://ibmi.taiwan-healthcare.org/zh/news_detail.php?REFDOCTYPID=0o4dd9ctwhtyumw0&REFDOCID=0r540qmbxxxlbtg8&PageNO=1">全台首座醫療創新園區 落腳台南</a><br/>
+            </div>
+          </div>
+          <div class="row twenty"><span style="color: rgb(62, 200, 255);">2022.01.19 <div class="label blue text-center">產業新知</div><div class="label yellow text-center">成功案例</div></span>
+            <div><a href="https://finance.ettoday.net/news/2172703">華碩打造「數位原生醫院」！施崇棠：關渡醫院為中心...</a>
+            </div> 
+          </div>
+        </div>
+        <div class="col-4 list-pic"><img src="{{ url_for('static', filename='images/園區.jpg') }}" width="450px" height="300px"></div>
+        <div class="col-4 list-pic"><img src="{{ url_for('static', filename='images/次時代.jpg') }}"  width="400px" height="300px"></div>
+      </div>
+      <button class="btn btn-primary">more</button>
+    </div>
+    <br/>
+
+    <!-- 活動消息  -->
+    <div class="container">
+      
+    <div class="row">
+      <div class="col-2 ">
+        <h2 id="act">活動消息</h2>
+    <hr size="10%" style="color: rgb(66, 165, 231);" width="70%"></hr>
+        <div class="row news-pic1" ><div><img src="{{ url_for('static', filename='images/icon.png') }}" width="200px " height="180px">
+        </div>
+        </div>
+        <div class="row news-pic1" ><div><img src="{{ url_for('static', filename='images/icon.png') }}" width="200px " height="180px">
+        </div>
+        </div>
+        <div class="row news-pic1" ><div><img src="{{ url_for('static', filename='images/icon.png') }}" width="200px " height="180px">
+        </div>
+        </div>
+      </div>
+      <div class="col-3 ">
+        <h2 style="color: #f0f0f0">活動消息</h2>
+         <hr size="10%" style="color: #f0f0f0" width="10%"></hr>
+        <div class="row news-pic1"></div>
+        <div class="row news-pic1"></div>
+        <div class="row news-pic1"></div>
+      </div>
+      
+      <div class="col-4 ">
+        <h2>焦點報導</h2>
+        <hr size="10%" style="color: rgb(66, 165, 231);" width="35%"></hr>
+      <div class="row news-pic2"></div>
+      </div>
+      <div class="col-3 ">
+        <h2 style="color: #f0f0f0">活動消息</h2>
+        <hr size="10%" style="color: #f0f0f0" width="10%"></hr>
+        <div class="row news-pic3"></div>
+        <div class="row news-pic3"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary">more</button>
+  </div>
+  <br/>
+      <!-- 產業夥伴 -->
+      <div class="container">
+        <h2 id="#cooperate">產業夥伴</h2>
+      <hr size="10%" style="color: rgb(66, 165, 231);" width="10%"></hr>
+      <div class="row">
+        <img src="{{ url_for('static', filename='images/合作.png') }}">
+      </div>
+    </div>
+    
+      <!-- 友好連結 -->
+      <div class="container">
+        <h2>友好連結</h2>
+      <hr size="10%" style="color: rgb(66, 165, 231);" width="10%"></hr>
+      <div class="row">
+        <img src="{{ url_for('static', filename='images/友好.png') }}">
+      </div>
+      </div>
+    {% endblock content %}

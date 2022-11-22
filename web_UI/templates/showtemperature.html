@@ -1,0 +1,366 @@
+<!-- templates/showdata.html -->
+{% extends "base.html" %}
+{% block title %}你的資料{% endblock title %}
+
+        {% block navigation %}
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+        <!-- Navigation-->
+        <input type="checkbox" name="" id="side-menu-switch">
+        {% endblock navigation %}
+
+        {% block content %}
+        <script>
+        function searchData()
+        {
+            let temperature='{{temp}}';
+            temperature=JSON.parse(temperature)
+            let time='{{time}}';
+            var time_list=cutTime(time);
+            let index;
+            console.log("you",document.getElementById('time-option').value);
+            searchTime=document.getElementById('time-option').value;
+            for(let i=0;i<time_list.length;i++)
+            {
+                if(time_list[i]==searchTime)
+                {
+                    index=i;
+                }
+            }
+            htmlCode='<ol>';
+            for(let i=0;i<5;i++)
+            {
+                let j=i+1
+                htmlCode+='<li> '+temperature[index][i]+' °C</li>';
+            }
+            htmlCode+='</ol>';
+            $('#foot-data-left').html(htmlCode);
+            htmlCode='<ol>';
+            for(let i=5;i<10;i++)
+            {
+                let j=i-4;
+                htmlCode+='<li> '+temperature[index][i]+' °C</li>';
+            }
+            htmlCode+='<ol>';
+            $('#foot-data-right').html(htmlCode);
+        // end func
+        
+        }
+        function cutTime(time)
+        {
+            let sub_time=[];
+            var check=0;
+            var first_index=0;
+            var last_index=0;
+            var num=0;
+            for(let i=0;i<time.length;i++)
+                {
+                    if(time[i]=='#')
+                    {
+                        ++check;
+                        num++;
+                        if(check==1)
+                        {
+                            first_index=i+4;
+                            // console.log(first_index);
+                        }
+                        if(check==2)
+                        {
+                            check=0;
+                            last_index=i-2;
+                            // console.log(last_index);
+                            sub_time.push(time.substring(first_index,last_index));
+                        }
+                    }
+                }
+                return sub_time;
+        }
+        
+        function createScatterChart(){
+        var temperature='{{temp}}';
+        var time='{{time}}';
+        temperature=JSON.parse(temperature)
+        // console.log(temperature)
+        timeFormat='YYYY-MM-DDTHH:mm:ss'
+        // var selTime1; 
+        selTime1=Date.parse(document.getElementById('selTime1').value);
+        selTime2=Date.parse(document.getElementById('selTime2').value);
+        if(selTime2<selTime1)
+        {
+            let temp=selTime1;
+            selTime1=selTime2;
+            selTime2=temp;
+        }
+        console.log("seltime",selTime1);
+        var temp_var1=[],time_list=[],temp_var2=[],temp_var3=[],temp_var4=[],temp_var5=[];
+        var check=0;
+        // dopingData.push({x: parseFloat(response.data[i]['Time'].replace(':','.')), y: response.data[i]['Place'], id: i});
+        var time_list=cutTime(time);
+        var startTimeIndex=-1;
+        var endTimeIndex=-1;
+        var sTime=[];
+        var type=0;
+        for(let i=0;i<time_list.length;i++)
+        {
+            sTime.push(Date.parse(time_list[0].substring(0,10)));
+        }
+        if(!(isNaN(selTime1))&&!(isNaN(selTime2))){
+            console.log("type",type);
+            // console.log();
+            for(let i=0;i<sTime.length;i++)
+            {
+                if(sTime[i]>=parseInt(selTime1)) //find start time
+                {
+                    startTimeIndex=i;
+                    break;
+                }
+            }
+            for(let i=sTime.length;i>0;i--) //find end time
+            {
+                if(sTime[i]<=selTime2)
+                {
+                    endTimeIndex=i;
+                    break;
+                }
+            }
+            if(startTimeIndex==-1 | endTimeIndex==-1)//select time not in range
+            {
+                type=1;
+                temp_var1.push({x:"0",y:"0"});
+
+            }
+            else{
+                type=1;
+                for(let i=startTimeIndex;i<endTimeIndex-startTimeIndex+1;i++)
+                {
+                    temp_var1.push({x:time_list[i],y:Math.abs(temperature[i][0]-temperature[i][5])});
+                    temp_var2.push({x:time_list[i],y:Math.abs(temperature[i][1]-temperature[i][6])});
+                    temp_var3.push({x:time_list[i],y:Math.abs(temperature[i][2]-temperature[i][7])});
+                    temp_var4.push({x:time_list[i],y:Math.abs(temperature[i][3]-temperature[i][8])});
+                    temp_var5.push({x:time_list[i],y:Math.abs(temperature[i][4]-temperature[i][9])});
+                }
+                // console.log('成功');
+            }
+        }
+        if(!type)
+        for(let i=0;i<temperature.length;i++)
+        {
+            temp_var1.push({x:time_list[i],y:Math.abs(temperature[i][0]-temperature[i][5])});
+            temp_var2.push({x:time_list[i],y:Math.abs(temperature[i][1]-temperature[i][6])});
+            temp_var3.push({x:time_list[i],y:Math.abs(temperature[i][2]-temperature[i][7])});
+            temp_var4.push({x:time_list[i],y:Math.abs(temperature[i][3]-temperature[i][8])});
+            temp_var5.push({x:time_list[i],y:Math.abs(temperature[i][4]-temperature[i][9])});
+                // console.log(temperature[i][j],temperature[i][5+j]);
+                // console.log('next');
+        }
+        console.log('time',time_list[0]);
+        // console.log('daat',data);
+        var ctx = document.getElementById("scatterChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+        label: 'Scatter Dataset',
+        datasets: [{
+            data: temp_var1,
+            label: '溫度差1-6',
+            backgroundColor: 'rgba(255, 0, 0, 1)',
+            fill: false,
+            },
+            {
+            data: temp_var2,
+            label: '溫度差2-7',
+            backgroundColor: 'rgba(240, 0, 0, 1)',
+            fill: false,
+            },
+            {
+            data: temp_var3,
+            label: '溫度差3-8',
+            backgroundColor: 'rgba(211, 0, 0, 1)',
+            fill: false,
+            },
+            {
+            data: temp_var4,
+            label: '溫度差4-9',
+            backgroundColor: 'rgba(200, 0, 0, 1)',
+            fill: false,
+            },
+            {
+            data: temp_var5,
+            label: '溫度差5-10',
+            backgroundColor: 'rgba(150, 0, 0, 1)',
+            fill: false,
+            },
+           ]
+        },
+        // option
+        options: {
+            responsive: true,
+            title:      {
+                display: true,
+                text:"兩腳溫度差"
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    time:       {
+                        format: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:     true,
+                        labelString: '時間'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display:     true,
+                        labelString: '溫度差'
+                    }
+                }]
+            }
+        }
+        // 
+        });
+        var selectCode='';
+        var optionCode='';
+        selectCode+='選擇時間'
+        selectCode+='<select style="float: right;" id="time-option">'
+        $('#time-select').html(selectCode);
+        for(let i=time_list.length-1;i>time_list.length-3;i--)
+        {
+            optionCode+='<option>'+time_list[i]+'</option>';    
+        }
+        $('#time-option').html(optionCode);
+        // $('foot-data-time').html()
+        htmlCode='<ol>';
+        for(let i=0;i<5;i++)
+        {
+            let j=i+1
+            htmlCode+='<li> '+temperature[temperature.length-1][i]+' °C</li>';
+        }
+        htmlCode+='</ol>';
+        $('#foot-data-left').html(htmlCode);
+        htmlCode='<ol>';
+        for(let i=5;i<10;i++)
+        {
+            let j=i-4;
+            htmlCode+='<li> '+temperature[temperature.length-1][i]+' °C</li>';
+        }
+        htmlCode+='<ol>';
+        $('#foot-data-right').html(htmlCode);
+        // end func
+        }
+        </script>
+        
+        <body id="page-top" onload="createScatterChart();">
+		<div class="side-menu">
+            <h3 style="color: white; text-align: center;"><i class="bi bi-person-circle" ></i></h3>
+            <h2  style="color: white; text-align: center;">{{ username }}</h2>
+			<form style="display: none;">
+				<input type="search" placeholder="請輸入關鍵字">
+				<button><i class="fa fa-search"></i></button>
+                
+			</form>
+            <div style="color: rgba(236, 236, 236, 0.863);text-align: center;">____________________________</div>
+			<nav class='menu-item'>
+				<!-- <div onclick="change(1);" class="uiTitle"><i class="fa fa-bars" ></i> 北部</div> -->
+				<ul id="menu-1" >
+                    <li><i class="bi bi-house" style="color: white"></i> <a href="/" class="a-white">首頁</a></li>
+					<li> <i class="bi bi-thermometer-half" style="color: white;"></i>溫度查詢</li>
+					<li><i class="bi bi-activity" style="color: white;"></i><a href="/showdata" class="a-white">微絲查詢</a></li>
+                    <li><i class="bi bi-box-arrow-left" style="color: white"></i> <a href="/logout" class="a-white">登出</a></li>
+				</ul>
+				
+			</nav>
+            <!-- 收和功能 -->
+			<!-- <label for="side-menu-switch"> 
+				<i class="fa fa-angle-right"></i>
+			</label> -->
+		</div>
+		<!-- 左側menu -->
+
+		<!-- <section class="slide" id='slide1'> -->
+			<div class="container">
+				<div class="row">
+						<div class="upper text-center">
+							<h2 class="reservoir-name">溫度數據</h2>
+							</div>
+                            <div class="col-lg-2 col-md-6 d-none  d-md-block "></div>
+                            <div class="col-lg-10 col-md-6 infinity-form-container" >
+                                <div class="card">
+                                    <h5 class="card-header">
+                                    <div>
+                                        <input type="date" name="bday" id="selTime1" >
+                                        <input type="date" name="bday" id="selTime2" >
+                                        <button type="submit" class="btn btn-secondary " onclick="createScatterChart()">查詢</button>
+                                    </div>
+                                </h5>
+                                    <div class="card-body">
+                              <canvas  id="scatterChart" width="900" height="380" ></canvas>
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-3">
+                                some text
+                            </div>
+						</div>
+				
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-5">
+                        <div class="col foot-pic">
+                            <img src="{{ url_for('static', filename='images/foot.jpg') }}" width="100%" height="100%" >
+                        </div>
+                    </div>
+
+                    <div class="col-5 ">
+                        <div class="row foot-search" >
+                            <h3 id="time-select"></h3>
+                            <button type="submit" class="btn btn-secondary " onclick="searchData()">查詢</button>
+                        </div>
+                        <div class="row foot-data" >
+                        <div class="col-6">
+
+                            <div class="card">
+                                <div class="card-header">
+                                  左腳溫度
+                                </div>
+                                <div class="card-body">
+                                  <h5 class="card-title" id="foot-data-left">Special title treatment</h5>
+                                  <p class="card-text">上方數字請依照左圖比較，若為1代表為左圖1的位置</p>
+                                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                                </div>
+                            </div>
+                              
+
+                            <!-- <h3 ></h3> -->
+                        </div>
+                        <div class="col-6">
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                  右腳溫度
+                                </div>
+                                <div class="card-body">
+                                  <h5 class="card-title" id="foot-data-right">Special title treatment</h5>
+                                  <p class="card-text">上方數字請依照左圖比較，若為1代表為左圖1的位置</p>
+                                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- <div class="row foot-data" ></div> -->
+                    </div>
+                    </div>
+
+                </div>
+			</div>
+        </div>
+    </body>
+		<!-- </section> -->
+
+        
+      
+        {% endblock content %}

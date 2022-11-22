@@ -1,0 +1,387 @@
+<!-- templates/showdata.html -->
+{% extends "base.html" %}
+{% block title %}你的資料{% endblock title %}
+
+        {% block navigation %}
+        <!-- Navigation-->
+        <input type="checkbox" name="" id="side-menu-switch">
+        {% endblock navigation %}
+
+        {% block content %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://www.jqueryscript.net/demo/Customizable-Liquid-Bubble-Chart-With-jQuery-Canvas/waterbubble.js"></script>
+        
+        <script>
+        function bubble1(){
+        var	waterValue=75;
+        if(waterValue<=20){
+            waterColor='rgb(255,99,71)';
+            textColor='rgb(255, 68, 68)';
+        }
+        if(waterValue>=60){
+            waterColor='rgba(25, 139, 201, 1)';
+            textColor='rgba(06, 85, 128, 0.8)';
+        }
+        if(waterValue>20&&waterValue<60){
+            waterColor='rgb(255, 160, 119)';
+            textColor='rgb(255,99,71)';
+        }
+        $("#demo").waterbubble({
+            txt: ('' + waterValue).slice(-3).toString() + " %",
+            data: waterValue/100,
+            animation: true,
+            waterColor:waterColor,
+            textColor:textColor
+        });
+        }
+
+        function test2(){
+        var	waterValue=95;
+        if(waterValue<=20){
+            waterColor='rgb(255,99,71)';
+            textColor='rgb(255, 68, 68)';
+        }
+        if(waterValue>=60){
+            waterColor='rgba(25, 139, 201, 1)';
+            textColor='rgba(06, 85, 128, 0.8)';
+        }
+        if(waterValue>20&&waterValue<60){
+            waterColor='rgb(255, 160, 119)';
+            textColor='rgb(255,99,71)';
+        }
+        $("#demo2").waterbubble({
+            txt: ('' + waterValue).slice(-3).toString() + " %",
+            data: waterValue/100,
+            animation: true,
+            waterColor:'#9B0000',
+            textColor:'#F05454',
+        });
+        }
+        function cutTime(time)
+        {
+            let sub_time=[];
+            var check=0;
+            var first_index=0;
+            var last_index=0;
+            var num=0;
+            for(let i=0;i<time.length;i++)
+                {
+                    if(time[i]=='#')
+                    {
+                        ++check;
+                        num++;
+                        if(check==1)
+                        {
+                            first_index=i+4;
+                            // console.log(first_index);
+                        }
+                        if(check==2)
+                        {
+                            check=0;
+                            last_index=i-2;
+                            // console.log(last_index);
+                            sub_time.push(time.substring(first_index,last_index));
+                        }
+                    }
+                }
+                return sub_time;
+        }
+        function createLineChart(){
+            var all_error_count=[]; //To caculate error
+            var sTime=[];//To compare time
+            var selectTime=[];//To get user select time
+            var type=0//if==0 defalut else select time
+            var datas = '{{ data}}';
+            var finalXdata=[];
+            var finalYdata=[];
+            var select_error_count=[];
+            datas=JSON.parse(datas);
+            selTime1=document.getElementById('selTime1').value;
+            selTime2=document.getElementById('selTime2').value;
+            if(selTime2<selTime1)
+            {
+                let temp=selTime1;
+                selTime1=selTime2;
+                selTime2=temp;
+            }
+            console.log('seltime',Date.parse(selTime1));
+            selTime1=Date.parse(selTime1);
+            selTime2=Date.parse(selTime2)
+            length=datas.length
+            for(let i=0;i<length;i++)
+            {
+                all_error_count.push(0);
+                for(let j=0;j<5;j++)
+                {
+                    if(datas[i][j]!=datas[i][5+j])
+                    {
+                        all_error_count[i]++;
+                    }
+                    // console.log(datas[i][j],datas[i][5+j]);
+                    // console.log('next');
+                }
+            }
+            // console.log('error',error_count[0])
+            
+            var time ='{{time}}';
+            var time_list=cutTime(time);
+            var startTimeIndex=-1;
+            var endTimeIndex=-1;
+            for(let i=0;i<time_list.length;i++)
+            {
+                sTime.push(Date.parse(time_list[0].substring(0,10)));
+            }
+            if(!(isNaN(selTime1))&&!(isNaN(selTime2))){
+                for(let i=0;i<sTime.length;i++)
+                {
+                    if(sTime[i]>=parseInt(selTime1)) //find start time
+                    {
+                        startTimeIndex=i;
+                        break;
+                    }
+                }
+                for(let i=sTime.length;i>0;i--) //find end time
+                {
+                    if(sTime[i]<=selTime2)
+                    {
+                        endTimeIndex=i;
+                        break;
+                    }
+                }
+                if(startTimeIndex==-1 | endTimeIndex==-1)//select time not in range
+                {
+                    type=1;
+                    selectTime.push('Not found');
+                    select_error_count.push(0);
+                    // console.log("沒找到");
+                }
+                else{
+                    type=1;
+                    for(let i=startTimeIndex;i<endTimeIndex-startTimeIndex+1;i++)
+                    {
+                        selectTime.push(time_list[i]);
+                        select_error_count.push(all_error_count[i]);
+                    }
+                    // console.log('成功');
+                }
+            }
+            if(type)
+            {
+                finalXdata=selectTime;
+                finalYdata=select_error_count;
+            }
+            else
+            {
+                finalXdata=time_list;
+                finalYdata=all_error_count;
+            }
+            var ctx = document.getElementById('lineChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                labels: finalXdata,
+                datasets: [{
+                    label: '誤差值',
+                    data: finalYdata,
+                    fill: true,
+                    borderColor: 'rgb(75, 192, 192)',
+                }]
+                },
+
+            //   optionai
+                options: {
+                title: {
+                display: true,
+                text: 'Demo Line Chart'
+                },
+                legend:{ 
+                labels: { 
+                    fontColor: 'rgb(0, 0, 0)',
+                    usePointStyle: true
+                } 
+                },
+                scales: {
+                // 各軸標題設定
+                // https://www.chartjs.org/docs/latest/axes/labelling.html
+                // 各軸格線設定
+                // https://www.chartjs.org/docs/latest/axes/styling.html
+                // x 軸設置
+                xAxes: [{
+                    // x 軸標題
+                    scaleLabel:{
+                    display: true,
+                    labelString:"時間",
+                    fontSize: 16
+                    },
+                    // x 軸格線
+                    gridLines: {
+                    display: true
+                    }
+                }],
+                // y 軸設置
+                yAxes: [{
+                    // y 軸標題
+                    scaleLabel:{
+                    display: true,
+                    labelString:"誤差",
+                    fontSize: 16
+                    },
+                    // y 軸格線
+                    gridLines: {
+                    display: false
+                    },
+                    // y 軸間距
+                    ticks: {
+                    min: 0,
+                    max: 5,
+                    stepSize: 1
+                    }
+                }]
+                }
+                }
+            
+                // end optional
+            });
+        
+            htmlCode='';
+            htmlCode+='敏感度 ';
+            htmlCode+=time_list[time_list.length-1];
+            $('#sens').html(htmlCode);
+            htmlCode='';
+            htmlCode+='特異值 ';
+            htmlCode+=time_list[time_list.length-1];
+            $('#sup').html(htmlCode);
+            
+            }
+             
+            </script>
+        
+        
+        <body id="page-top" onload="createLineChart();bubble1();test2();">
+		<div class="side-menu">
+            <h3 style="color: white; text-align: center;"><i class="bi bi-person-circle" ></i></h3>
+            <h2  style="color: white; text-align: center;">{{ username }}</h2>
+			<form style="display: none;">
+				<input type="search" placeholder="請輸入關鍵字">
+				<button><i class="fa fa-search"></i></button>
+                
+			</form>
+            <div style="color: rgba(236, 236, 236, 0.863);text-align: center;">____________________________</div>
+			<nav class='menu-item'>
+				<!-- <div onclick="change(1);" class="uiTitle"><i class="fa fa-bars" ></i> 北部</div> -->
+				<ul id="menu-1" >
+                    <li><i class="bi bi-house" style="color: white"></i> <a href="/" class="a-white">首頁</a></li>
+					<li> <i class="bi bi-thermometer-half" style="color: white;"></i><a href="/temperature" class="a-white">溫度查詢</a></li>
+					<li><i class="bi bi-activity" style="color: white;"></i>微絲查詢</li>
+                    <li><i class="bi bi-box-arrow-left" style="color: white"></i> <a href="/logout" class="a-white">登出</a></li>
+				</ul>
+				
+			</nav>
+            <!-- 收和功能 -->
+			<!-- <label for="side-menu-switch"> 
+				<i class="fa fa-angle-right"></i>
+			</label> -->
+		</div> 
+		<!-- 左側menu -->
+
+		<!-- <section class="slide" id='slide1'> -->
+			<div class="container-fuild">
+				<div class="row">
+						<div class="upper text-center">
+							<h2 class="reservoir-name">微絲數據</h2>
+							</div>
+                            <div class="col-lg-2 col-md-6 d-none  d-md-block "></div>
+                            <div class="col-lg-7 col-md-6 infinity-form-container" >
+                                <div class="card">
+                                    
+                                    <!-- <input type="button" value="date" id="datebtn" onclick="createLineChart()"> -->
+                                   
+                              
+                                    <h5  class="card-header" id="time-select">
+                                        <div>
+                                            <input type="date" name="bday" id="selTime1">
+                                            <input type="date" name="bday" id="selTime2">
+                                            <button type="submit" class="btn btn-secondary " onclick="createLineChart()">查詢</button>
+                                        </div>
+                                    </h5>
+                                    <div class="card-body">
+                              <canvas  id="lineChart" width="900" height="380" ></canvas>
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card">
+                                <h5 class="card-header">檢查時機</h5>
+                                <div class="card-body">
+                                  <!-- <h5 class="card-title"> -->
+                                      <div>依照分級定時進行檢查</div>
+                                      <ul>
+                                      <li><i class="bi bi-exclamation-triangle-fill" style="color: rgb(216, 197, 30);"></i> 0級 有感覺、無潰瘍、無足部變形 每年檢查</li>
+                                      <li><i class="bi bi-exclamation-triangle-fill" style="color: rgb(219, 110, 47);"></i> 1級 一點無感覺、無潰瘍、無足部變形 每6個月檢查</li>
+                                      <li><i class="bi bi-exclamation-triangle-fill" style="color: rgb(204, 52, 52);"></i> 2級 一點無感覺、無潰瘍、有足部變形 每3–4個月檢查</li>
+                                      <li><i class="bi bi-exclamation-triangle-fill" style="color: brown;"></i> 3級 一點無感覺、曾發生潰瘍 每1–2個月檢查</li>
+                                      </ul>
+                                      <!-- </h5> -->
+
+                                  <a href="https://webreg.tpech.gov.tw/RegOnline1_1.aspx?ZCode=M" class="btn btn-primary" style="margin-top: 5px;">點我掛號</a>
+                                </div>
+                              </div>
+                            </div>
+						</div>
+				
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-3">
+
+                        <div class="card">
+                            <h5 class="card-header" id="sens">敏感度</h5>
+                            <div class="card-body">
+                                <canvas id="demo"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-3">
+                        <div class="card">
+                            <h5 class="card-header" id="sup">特異度</h5>
+                            <div class="card-body">
+                                <canvas id="demo2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="card">
+                            <h5 class="card-header">足部保養</h5>
+                            <div class="card-body">
+                                <div>足部保養可以進行以下幾個步驟</div>
+                                <ol>
+                                    <li>每日檢查雙腳有無乾裂、水泡、割傷、紅腫、厚繭。</li>
+                                    <li>每日清洗雙腳並在結束後用毛巾將腳趾間擦乾。</li>
+                                    <li>每日塗抹乳液，並在長繭時用浮石磨除、勿用剪刀剪開。</li>
+                                    <li>定期剪指甲長度應適中，不可太長或太短。</li>
+                                    <li>選擇透氣鞋子及淺色襪子，外出盡量不要穿拖鞋或涼鞋。</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <img src="{{ url_for('static', filename='images/intro.PNG') }}" alt="" width="97%">
+                </div>
+                </div>
+
+			</div>
+        </div>
+    </body>
+		<!-- </section> -->
+
+        
+      
+        {% endblock content %}

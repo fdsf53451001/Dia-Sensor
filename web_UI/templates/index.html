@@ -1,0 +1,59 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+{% block title %}FootHow{% endblock title %}
+
+{% block navigation %}
+    {{ super() }}
+{% endblock navigation %}
+
+    {% block content %}
+    <head><link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/></head>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container px-4 px-lg-5 h-100">
+                <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+                    <div class="col-lg-8 align-self-end">
+                        <h1 class="text-white font-weight-bold">歡迎來到此網站</h1>
+                        <hr class="divider" />
+                    </div>
+                    <div class="col-lg-8 align-self-baseline">
+                        <p class="text-white-75 mb-5 text-white-50" > 我們提供微思檢測、溫度感測、數據分析、追蹤個案等功能</p>
+                        <a class="btn btn-primary btn-xl" href="/showdata">開始檢測</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- About-->
+
+        <!-- product picture-->
+        <div id="portfolio">
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    {% for i in range(1, 7) %}
+                    <div class="col-lg-4 col-sm-6">
+                        <a class="portfolio-box" href="/static/images/img/portfolio/fullsize/{{ i }}.jpg" title="Project Name">
+                            <img class="img-fluid" src="/static/images/img/portfolio/thumbnails/{{ i }}.jpg" alt="..." />
+                            <div class="portfolio-box-caption">
+                                <div class="project-category text-white-50">Category</div>
+                                <div class="project-name">Project Name</div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Call to action-->
+        <!-- Contact-->
+        <div id="box" onmouseover="display()" onmouseout="disappear()">
+            <div style="background-color: rgb(45, 175, 45); color: white;" >line</div>
+            <img src="{{ url_for('static', filename='images/img/qrcode.jpg') }}" width="200px" height="200px">
+        <div>Add LINE Friends via QR Code</div>
+           </div>
+       <div class="line-img-pos">
+        
+           <img src="{{ url_for('static', filename='images/img/下載.png') }}" width="60px" height="60px" class="rad-img" onmouseover="display()" onmouseout="disappear()">
+           <div class="text-white">聯絡我們</div>
+       </div>
+
+    {% endblock content %}
